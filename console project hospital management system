@@ -1,0 +1,167 @@
+package consoleproject;
+
+import java.util.Scanner;
+import java.sql.*;
+public class consoleproject {
+public static void main(String args[]){
+Scanner sc=new Scanner(System.in);
+try {
+	Class.forName("com.mysql.jdbc.Driver");
+	Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/hospital","root","8590875614@Sql");
+	Statement st=con.createStatement();
+	System.out.println("            welcome to  Anu Hospital                ");
+	System.out.println("********************************************************************************* ");
+	System.out.println("1.Admin                                  2.user");
+	System.out.println("-------------------------------------------------------------------------------");
+	int vish=sc.nextInt();
+	if(vish==1)
+	{
+		System.out.println("Enter your name:");
+		String name=sc.next();
+		System.out.println(" Enter your password");
+		String pass=sc.next();
+		if((name.equals("admin"))&&(pass.equals("admin@123")))
+		{
+			System.out.println("1.Add patient details                 2.Doctor  Appointment details");
+			int val=sc.nextInt();
+			if(val==1)
+			{
+				System.out.println("Enter your  name:");
+				String name1=sc.next();
+				System.out.println("Enter your age ");
+				int age=sc.nextInt();
+				System.out.println("Enter your gender :");
+				String gender=sc.next();
+				System.out.println("Enter your phone Number:");
+				 long phone=sc.nextLong();
+				 System.out.println("Enter your Health status:");
+				String health=sc.next();
+				 System.out.println("Enter your Address:");
+					String address=sc.next();
+					
+					System.out.print("Your details are processing...");
+					   
+					   System.out.println(" ");
+					   try {
+						 	    
+						   Thread.sleep(2000);  
+						
+					   }
+					   catch(Exception e)
+					   {
+						   System.out.println(e);
+					   }
+					
+					
+					if(age!=0) {
+						
+						System.out.println("Add successfully......"); 
+					}
+					else {
+						System.out.println("your details not found");
+					}
+					
+					
+			    String use="insert into patientsdetails(name,age,gender,phonenumber,health,address)values('"+name1+"','"+age+"','"+gender+"','"+phone+"','"+health+"','"+address+"' )";
+			     int i=st.executeUpdate(use);
+			     
+			}
+			
+			else if(val==2) {
+				System.out.println("Enter your Doctor name:");
+				String name1=sc.next();
+				System.out.println("Enter your age ");
+				int age1=sc.nextInt();
+				System.out.println("Enter your gender :");
+				String gender1=sc.next();
+				System.out.println("Enter your phone Number:");
+				 long phone1=sc.nextLong();
+				 System.out.println("Enter your Health specialist:");
+				String healthspl=sc.next();
+				System.out.println("ADD the Doctor details....(Yes or NO)");
+				String cont=sc.next();
+				if(age1!=0) {
+					System.out.println("Add successfully......"); 
+					System.out.println("--------------------------------------------------------------------------------------------");
+					System.out.println("                           Thank you for chosing Durga hospital   ");
+				}
+				else {
+					System.out.println("your details not found");
+				}
+				
+				 String use="insert into doctordetails(name,age,gender,phonenumber, healthspecialist)values('"+name1+"','"+age1+"','"+gender1+"','"+phone1+"','"+healthspl+"')";
+			     int i=st.executeUpdate(use);
+			}
+		}
+	}
+	else if(vish==2)
+	{
+		System.out.println("Enter your name:");
+		String name2=sc.next();
+		System.out.println("Enter your password");
+		int pass2=sc.nextInt();
+		if((name2.equals("vishnu"))&&(pass2==12345))
+		{  
+			//patient
+			
+			System.out.println("Enter the patient name:");
+			String patentname=sc.next();
+			ResultSet rs=st.executeQuery("Select * From patientsdetails where name='"+patentname+"'");
+			while(rs.next()) {
+				String name=rs.getString("name");
+				if(name.equals(patentname))
+				{
+					int patage=rs.getInt("age");
+					String patgender=rs.getString("gender");
+					long patnum=rs.getLong("phonenumber");
+					String pathelth=rs.getString("health");
+					String pataddress=rs.getString("address");
+					System.out.println("                                             PATIENT DETAILS");
+					System.out.println("name:"+name+" patient age:"+patage+" Gender:"+patgender+" contact number:"+patnum+"  Health status:"+pathelth+" Address:"+pataddress);
+					System.out.println("-------------------------------------------------------------------------------------------------------------------------------");
+					//doctor details
+					ResultSet rs1=st.executeQuery("Select * From doctordetails where healthspecialist='"+pathelth+"'");
+					while (rs1.next())
+					{
+						String healthspecialist=rs1.getString("healthspecialist");
+						if(healthspecialist.equals(pathelth))
+						{
+							String docname=rs1.getString("name");
+							int docage=rs1.getInt("age");
+							String docgender=rs1.getString("gender");
+							long docnum=rs1.getLong("phonenumber");
+							String dochelth=rs1.getString("healthspecialist");
+							System.out.println("enter your Health status  ");
+							String doctor=sc.next();
+							System.out.println("                                       DOCTOR DETAILS");
+							System.out.println("------------------------------------------------------------------------------------------------");
+							System.out.println("doctor name:"+docname+"Age:"+docage+"gender:"+docgender+" number:"+docnum+" Specilist:"+dochelth);
+						}
+					}
+					
+					
+				}
+				else {
+					System.out.println("wrong patent name");
+				}
+				
+			}
+			
+		}
+	}
+	
+	
+	st.close();
+	con.close();
+}
+catch(Exception e) {
+//	System.out.println("Error");
+	e.printStackTrace();
+}
+}
+
+
+	
+}
+
+
